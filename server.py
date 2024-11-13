@@ -24,6 +24,9 @@ class JogoGomoku:
     def get_jogador_atual(self):
         return self.jogador_atual
 
+    def get_vencedor(self):
+        return self.vencedor
+
     def novo_jogo(self):
         print("novo jogo:")
         self.tabuleiro = [[' -' for _ in range(15)] for _ in range(15)]
@@ -68,19 +71,15 @@ class JogoGomoku:
         # Verifica se o jogador conseguiu 5 peças em linha nas direções horizontais, verticais e diagonais
         return any(verificar_direcao(dx, dy) for dx, dy in [(1, 0), (0, 1), (1, 1), (1, -1)])
 
-    def get_vencedor(self):
-        return self.vencedor
 
 # Configurando o servidor XML-RPC
-
-
 def main():
     servidor = xmlrpc.server.SimpleXMLRPCServer(
-        ("localhost", 8000), allow_none=True)
+        ("127.0.0.1", 8000), allow_none=True)
     servidor.register_instance(JogoGomoku())
     print("Servidor do Gomoku está rodando...")
     servidor.serve_forever()
 
 
-if __name__ == "__main__":
-    main()
+# executando a função principal
+main()

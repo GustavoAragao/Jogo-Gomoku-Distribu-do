@@ -1,6 +1,6 @@
 import xmlrpc.client
-import time
 import os
+import time
 
 
 def limpar_tela():
@@ -18,7 +18,7 @@ def exibir_tabuleiro(tabuleiro):
 
 def main():
     # Conecta ao servidor XML-RPC
-    servidor = xmlrpc.client.ServerProxy("http://localhost:8000/")
+    servidor = xmlrpc.client.ServerProxy("http://127.0.0.1:8000/")
     print("Aguarde...")
    # se ja tem um vencedor é dá partida passada então reinicia
     vencedor = servidor.get_vencedor()
@@ -40,6 +40,9 @@ def main():
         # Verifica se já há um vencedor
         vencedor = servidor.get_vencedor()
         if vencedor:
+            limpar_tela()
+            print("Tabuleiro Final:")
+            exibir_tabuleiro(servidor.get_tabuleiro())
             print(f"Jogador {vencedor} venceu!")
             break
 
@@ -68,12 +71,11 @@ def main():
             if not esperando:
                 print(f"Aguardando a jogada do Jogador {jogador_atual}...")
                 esperando = True  # Define que já foi mostrada a mensagem de espera
-            else:
-                print("...")
+            # pausa por dois segundo para diminuir a quantidade de chamadas ao servidor
+            time.sleep(2)
 
     print("Encerrando o programa...")
 
 
-# garante que o código dentro do bloco execute apenas se o arquivo for executado diretamente, e não importado.
-if __name__ == "__main__":
-    main()
+# executando a função principal
+main()
